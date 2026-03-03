@@ -30,7 +30,11 @@ export default function TodoScreen() {
 
   React.useEffect(() => {
     fetchTodos().then((todos) => {
-      setTodos(todos ?? []);
+      const loaded = todos ?? [];
+      setTodos(loaded);
+      if (loaded.length > 0) {
+        nextId.current = Math.max(...loaded.map((t) => t.id)) + 1;
+      }
       setHasLoaded(true);
     });
   }, []);
@@ -43,7 +47,7 @@ export default function TodoScreen() {
 
     try {
       await AsyncStorage.setItem('todos', JSON.stringify([...todos, todo]));
-      setTodos((prev) => [...prev, { id: nextId.current++, text: trimmed, done: false }]);
+      setTodos((prev) => [...prev, todo]);
       setInput('');
     } catch (error) {
       console.error(error);
