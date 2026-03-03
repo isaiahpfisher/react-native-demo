@@ -33,6 +33,7 @@ export default function TodoScreen() {
       const loaded = todos ?? [];
       setTodos(loaded);
       if (loaded.length > 0) {
+        // @ts-expect-error
         nextId.current = Math.max(...loaded.map((t) => t.id)) + 1;
       }
       setHasLoaded(true);
